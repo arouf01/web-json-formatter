@@ -8,6 +8,11 @@ const Home = () => {
   const [error, setError] = useState(null);
   const [selectedTheme, setSelectedTheme] = useState("rjv-default");
   const [selectedFormatterTheme, setSelectedFormatterTheme] = useState("white");
+  const [selectedFormatterDataTypes, setSelectedFormatterDataTypes] =
+    useState("true");
+  const [selecteddisplayObjectSize, setSelecteddisplayObjectSize] =
+    useState("true");
+  const [selectedIconStyle, setSelectediconStyle] = useState("triangle");
 
   const formatJSON = () => {
     try {
@@ -57,172 +62,219 @@ const Home = () => {
   const handleFormatterTheme = (e) => {
     setSelectedFormatterTheme(e.target.value);
   };
+  const handleFormatterDataTypes = (e) => {
+    setSelectedFormatterDataTypes(e.target.value);
+  };
+
+  const handledisplayObjectSize = (e) => {
+    setSelecteddisplayObjectSize(e.target.value);
+  };
+  const handleIconStyle = (e) => {
+    setSelectediconStyle(e.target.value);
+  };
 
   return (
     <div className="w-[90%] mx-auto p-4">
-      <div className="w-[90%] mx-auto mt-20 p-4 rounded">
-        {/* JSON Input Area */}
-        <h2 className="text-3xl font-semibold text-center mb-6">
+      <div className="w-[90%] mx-auto mt-20 p-4 rounded-lg bg-white shadow-xl">
+        {/* Heading */}
+        <h2 className="text-4xl font-bold text-center mb-8 text-gray-800 bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent">
           JSON Formatter
         </h2>
 
-        {/* JSON Input Area */}
-        <div className="p-5 rounded border border-gray-300 shadow-sm mb-6">
+        {/* Input Area */}
+        <div className="p-6 rounded-lg border border-gray-200 shadow-lg bg-gray-50 mb-8">
           <textarea
             value={jsonInput}
             onChange={handleChange}
-            className="w-full h-40 resize-none border border-gray-300 p-3 rounded font-mono text-sm focus:outline-none focus:border-blue-500"
+            className="w-full h-40 resize-none border border-gray-300 p-4 rounded-lg font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 placeholder-gray-500"
             placeholder="Paste JSON here"
           />
 
-          <div className="flex flex-wrap items-end justify-between gap-4 mt-4">
-            <div className="flex flex-wrap items-center gap-3">
-              <button
-                onClick={formatJSON}
-                className="bg-blue-600 text-white px-5 py-2 rounded-md shadow-md hover:bg-blue-700 transition"
+          {/* Buttons in one row */}
+          <div className="flex flex-wrap justify-center sm:justify-start gap-4 mt-6">
+            <button
+              onClick={formatJSON}
+              className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-lg shadow-md hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-300 transform hover:scale-105 cursor-pointer"
+            >
+              FORMAT JSON
+            </button>
+            <button
+              onClick={() => {
+                setJsonInput("");
+                setFormattedJson("");
+                setParsedJson(null);
+                setError(null);
+              }}
+              className="bg-gradient-to-r from-gray-200 to-gray-300 text-gray-800 px-6 py-3 rounded-lg shadow-md hover:from-gray-300 hover:to-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-300 transform hover:scale-105 cursor-pointer"
+            >
+              CLEAR
+            </button>
+            <button
+              onClick={pasteFromClipboard}
+              className="bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-3 rounded-lg shadow-md hover:from-green-700 hover:to-green-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-300 transform hover:scale-105 cursor-pointer"
+            >
+              PASTE
+            </button>
+          </div>
+
+          {/* Select Fields in one scrollable row */}
+          <div className="flex flex-nowrap gap-3 mt-6 pb-3 justify-center ">
+            {/* Formatter Theme */}
+            <div className="min-w-[18%] flex-shrink-0">
+              <label className="block text-sm font-semibold text-gray-700 mb-1">
+                Formatter Theme
+              </label>
+              <select
+                value={selectedFormatterTheme}
+                onChange={handleFormatterTheme}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white shadow-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
               >
-                FORMAT JSON
-              </button>
-              <button
-                onClick={() => {
-                  setJsonInput("");
-                  setFormattedJson("");
-                  setParsedJson(null);
-                  setError(null);
-                }}
-                className="bg-gray-200 text-gray-700 px-5 py-2 rounded-md shadow-sm hover:bg-gray-300 transition"
-              >
-                CLEAR
-              </button>
-              <button
-                onClick={pasteFromClipboard}
-                className="bg-green-600 text-white px-5 py-2 rounded-md shadow-md hover:bg-green-700 transition"
-              >
-                PASTE
-              </button>
+                <option value="white">Light</option>
+                <option value="black">Dark</option>
+              </select>
             </div>
 
-            <div className="flex flex-wrap gap-4 ml-auto">
-              <div className="w-full sm:w-60">
-                <label
-                  htmlFor="FormatterTheme"
-                  className="block text-sm font-semibold text-gray-700 mb-1"
-                >
-                  Choose Formatter Theme
-                </label>
-                <select
-                  id="FormatterTheme"
-                  value={selectedFormatterTheme}
-                  onChange={handleFormatterTheme}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                >
-                  <option value="" disabled hidden>
-                    -- Choose an option --
-                  </option>
-                  <option value="white">Light</option>
-                  <option value="black">Dark</option>
-                </select>
-              </div>
+            {/* Display Data Types */}
+            <div className="min-w-[18%] flex-shrink-0">
+              <label className="block text-sm font-semibold text-gray-700 mb-1">
+                Display Data Types
+              </label>
+              <select
+                value={selectedFormatterDataTypes}
+                onChange={handleFormatterDataTypes}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white shadow-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
+              >
+                <option value="true">Enable</option>
+                <option value="false">Disable</option>
+              </select>
+            </div>
 
-              <div className="w-full sm:w-60">
-                <label
-                  htmlFor="themeSelect"
-                  className="block text-sm font-semibold text-gray-700 mb-1"
-                >
-                  Choose Theme
-                </label>
-                <select
-                  id="themeSelect"
-                  value={selectedTheme}
-                  onChange={handleThemeChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                >
-                  <option value="" disabled hidden>
-                    -- Choose an option --
+            {/* Display Object Size */}
+            <div className="min-w-[18%] flex-shrink-0">
+              <label className="block text-sm font-semibold text-gray-700 mb-1">
+                Display Object Size
+              </label>
+              <select
+                value={selecteddisplayObjectSize}
+                onChange={handledisplayObjectSize}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white shadow-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
+              >
+                <option value="true">Enable</option>
+                <option value="false">Disable</option>
+              </select>
+            </div>
+
+            {/* Icon Style */}
+            <div className="min-w-[18%] flex-shrink-0">
+              <label className="block text-sm font-semibold text-gray-700 mb-1">
+                Icon Style
+              </label>
+              <select
+                value={selectedIconStyle}
+                onChange={handleIconStyle}
+                className=" z-10 w-full px-4 py-2 border border-gray-300 rounded-lg bg-white shadow-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
+              >
+                <option value="triangle">Triangle</option>
+                <option value="circle">Circle</option>
+                <option value="square">Square</option>
+              </select>
+            </div>
+
+            {/* Formatter Style */}
+            <div className="min-w-[18%] flex-shrink-0">
+              <label className="block text-sm font-semibold text-gray-700 mb-1">
+                Formatter Style
+              </label>
+              <select
+                value={selectedTheme}
+                onChange={handleThemeChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white shadow-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
+              >
+                <option value="" disabled hidden>
+                  -- Choose an option --
+                </option>
+                {[
+                  "rjv-default",
+                  "apathy",
+                  "apathy:inverted",
+                  "ashes",
+                  "bespin",
+                  "brewer",
+                  "bright",
+                  "bright:inverted",
+                  "chalk",
+                  "codeschool",
+                  "colors",
+                  "eighties",
+                  "embers",
+                  "flat",
+                  "google",
+                  "grayscale",
+                  "grayscale:inverted",
+                  "greenscreen",
+                  "harmonic",
+                  "hopscotch",
+                  "isotope",
+                  "marrakesh",
+                  "mocha",
+                  "monokai",
+                  "ocean",
+                  "paraiso",
+                  "pop",
+                  "railscasts",
+                  "shapeshifter",
+                  "shapeshifter:inverted",
+                  "solarized",
+                  "summerfruit",
+                  "summerfruit:inverted",
+                  "threezerotwofour",
+                  "tomorrow",
+                  "tube",
+                  "twilight",
+                ].map((theme) => (
+                  <option key={theme} value={theme}>
+                    {theme.charAt(0).toUpperCase() + theme.slice(1)}
                   </option>
-                  {[
-                    "rjv-default",
-                    "apathy",
-                    "apathy:inverted",
-                    "ashes",
-                    "bespin",
-                    "brewer",
-                    "bright",
-                    "bright:inverted",
-                    "chalk",
-                    "codeschool",
-                    "colors",
-                    "eighties",
-                    "embers",
-                    "flat",
-                    "google",
-                    "grayscale",
-                    "grayscale:inverted",
-                    "greenscreen",
-                    "harmonic",
-                    "hopscotch",
-                    "isotope",
-                    "marrakesh",
-                    "mocha",
-                    "monokai",
-                    "ocean",
-                    "paraiso",
-                    "pop",
-                    "railscasts",
-                    "shapeshifter",
-                    "shapeshifter:inverted",
-                    "solarized",
-                    "summerfruit",
-                    "summerfruit:inverted",
-                    "threezerotwofour",
-                    "tomorrow",
-                    "tube",
-                    "twilight",
-                  ].map((theme) => (
-                    <option key={theme} value={theme}>
-                      {theme.charAt(0).toUpperCase() + theme.slice(1)}
-                    </option>
-                  ))}
-                </select>
-              </div>
+                ))}
+              </select>
             </div>
           </div>
         </div>
       </div>
 
       {/* Formatted JSON Part */}
-      <div className="w-[95%] max-w-7xl mx-auto mt-6 p-4">
+      <div className="w-[95%] max-w-7xl mx-auto mt-5 p-4">
         {/* Error Display */}
         {error && <p className="text-red-600 font-semibold mb-4">❌ {error}</p>}
 
         {/* Formatted JSON Output */}
         {parsedJson && (
           <div className="relative">
-            <h2 className="text-gray-800 font-medium mb-10 text-3xl">
+            <h2 className="text-gray-800 font-medium mb-5 text-3xl">
               Formatted JSON:
             </h2>
             <div
               className="rounded mb-6"
               style={{
-                maxHeight: "30vh",
+                maxHeight: "15vh",
                 padding: "10px",
                 backgroundColor: "white",
               }}
             >
               <ReactJson
                 src={parsedJson}
-                name={false}
                 collapsed={false}
                 enableClipboard={true}
-                displayDataTypes={false}
-                displayObjectSize={false}
+                displayDataTypes={selectedFormatterDataTypes === "true"}
+                displayObjectSize={selecteddisplayObjectSize === "true"}
+                iconStyle={selectedIconStyle}
                 theme={selectedTheme}
                 style={{
-                  backgroundColor:
-                    selectedFormatterTheme === "white" ? "#ffffff" : "#000000",
+                  backgroundColor: `${selectedFormatterTheme}`,
                   fontSize: "16px",
                   textAlign: "left",
                   padding: "20px",
+                  overflowX: "auto",
                 }}
               />
             </div>
