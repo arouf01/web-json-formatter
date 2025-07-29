@@ -13,6 +13,7 @@ const Home = () => {
   const [selecteddisplayObjectSize, setSelecteddisplayObjectSize] =
     useState("true");
   const [selectedIconStyle, setSelectediconStyle] = useState("triangle");
+  const [fontSize, setFontSize] = useState(16);
 
   const formatJSON = () => {
     try {
@@ -118,9 +119,9 @@ const Home = () => {
           </div>
 
           {/* Select Fields in one scrollable row */}
-          <div className="flex flex-nowrap gap-3 mt-6 pb-3 justify-center ">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6 pb-3 justify-space items-center text-center">
             {/* Formatter Theme */}
-            <div className="min-w-[18%] flex-shrink-0">
+            <div className="flex-shrink-0">
               <label className="block text-sm font-semibold text-gray-700 mb-1">
                 Formatter Theme
               </label>
@@ -135,7 +136,7 @@ const Home = () => {
             </div>
 
             {/* Display Data Types */}
-            <div className="min-w-[18%] flex-shrink-0">
+            <div className="flex-shrink-0">
               <label className="block text-sm font-semibold text-gray-700 mb-1">
                 Display Data Types
               </label>
@@ -150,7 +151,7 @@ const Home = () => {
             </div>
 
             {/* Display Object Size */}
-            <div className="min-w-[18%] flex-shrink-0">
+            <div className="flex-shrink-0">
               <label className="block text-sm font-semibold text-gray-700 mb-1">
                 Display Object Size
               </label>
@@ -165,7 +166,7 @@ const Home = () => {
             </div>
 
             {/* Icon Style */}
-            <div className="min-w-[18%] flex-shrink-0">
+            <div className="flex-shrink-0">
               <label className="block text-sm font-semibold text-gray-700 mb-1">
                 Icon Style
               </label>
@@ -181,7 +182,7 @@ const Home = () => {
             </div>
 
             {/* Formatter Style */}
-            <div className="min-w-[18%] flex-shrink-0">
+            <div className="flex-shrink-0">
               <label className="block text-sm font-semibold text-gray-700 mb-1">
                 Formatter Style
               </label>
@@ -238,6 +239,28 @@ const Home = () => {
                 ))}
               </select>
             </div>
+
+            {/* Font Size */}
+            <div className="flex-shrink-0">
+              <label className="block text-sm font-semibold text-gray-700 mb-1">
+                Font Size
+              </label>
+              <div className="flex items-center gap-2 justify-center py-1">
+                <button
+                  className="btn btn-sm"
+                  onClick={() => setFontSize((f) => Math.max(10, f - 1))}
+                >
+                  -
+                </button>
+                <span className="text-sm w-10 text-center">{fontSize}px</span>
+                <button
+                  className="btn btn-sm"
+                  onClick={() => setFontSize((f) => Math.min(72, f + 1))}
+                >
+                  +
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -271,7 +294,7 @@ const Home = () => {
                 theme={selectedTheme}
                 style={{
                   backgroundColor: `${selectedFormatterTheme}`,
-                  fontSize: "16px",
+                  fontSize: `${fontSize}px`,
                   textAlign: "left",
                   padding: "20px",
                   overflowX: "auto",
